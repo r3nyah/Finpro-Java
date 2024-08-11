@@ -1,24 +1,32 @@
+package main.java.service;
+
+import main.java.util.FileManager;
 import java.util.Scanner;
 
 public class LoginRegisterSystem {
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        FileManager fileManager = new FileManager();
-        HashTable hashTable = new HashTable(100);
-        fileManager.loadUsers(hashTable);
-        UserManager userManager = new UserManager(hashTable, fileManager);
+    private UserManager userManager;
 
+    public LoginRegisterSystem() {
+        HashTable hashTable = new HashTable(100);
+        FileManager fileManager = new FileManager();
+        fileManager.loadUsers(hashTable);
+        userManager = new UserManager(hashTable, fileManager);
+    }
+
+    public void run() {
+        Scanner scanner = new Scanner(System.in);
         while (true) {
+            System.out.println("Welcome to the Login/Register System");
             System.out.println("1. Register");
             System.out.println("2. Login");
             System.out.println("3. Update User");
             System.out.println("4. Delete User");
             System.out.println("5. Exit");
-            System.out.print("Choose an option: ");
-            int option = scanner.nextInt();
-            scanner.nextLine();  // Consume newline
+            System.out.print("Enter your choice: ");
+            int choice = scanner.nextInt();
+            scanner.nextLine(); // Consume newline
 
-            switch (option) {
+            switch (choice) {
                 case 1:
                     userManager.register(scanner);
                     break;
@@ -32,11 +40,14 @@ public class LoginRegisterSystem {
                     userManager.deleteUser(scanner);
                     break;
                 case 5:
-                    fileManager.saveUsers(hashTable);
-                    System.exit(0);
+                    userManager.getFileManager().saveUsers(userManager.getHashTable());
+                    System.out.println("Goodbye!");
+                    scanner.close();
+                    return;
                 default:
-                    System.out.println("Invalid option. Please try again.");
+                    System.out.println("Invalid choice. Please try again.");
             }
+            System.out.println();
         }
     }
 }

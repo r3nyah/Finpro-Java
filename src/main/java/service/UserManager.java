@@ -1,3 +1,11 @@
+package main.java.service;
+
+import main.java.model.User;
+import main.java.util.FileManager;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Scanner;
 
 public class UserManager {
@@ -30,7 +38,7 @@ public class UserManager {
         String password = scanner.nextLine();
 
         User user = hashTable.search(username);
-        if (user != null && user.checkPassword(password)) {
+        if (user != null && user.getPasswordHash().equals(new User(username, password).getPasswordHash())) {
             System.out.println("Login successful!");
         } else {
             System.out.println("Invalid username or password.");
@@ -44,7 +52,7 @@ public class UserManager {
         String password = scanner.nextLine();
 
         User user = hashTable.search(username);
-        if (user != null && user.checkPassword(password)) {
+        if (user != null && user.getPasswordHash().equals(new User(username, password).getPasswordHash())) {
             System.out.print("Enter new username: ");
             String newUsername = scanner.nextLine();
             System.out.print("Enter new password: ");
@@ -63,11 +71,30 @@ public class UserManager {
         String password = scanner.nextLine();
 
         User user = hashTable.search(username);
-        if (user != null && user.checkPassword(password)) {
+        if (user != null && user.getPasswordHash().equals(new User(username, password).getPasswordHash())) {
             hashTable.delete(username);
             System.out.println("User deleted successfully.");
         } else {
             System.out.println("Invalid credentials. Deletion failed.");
         }
+    }
+
+    public List<User> getAllUsers() {
+        List<User> users = new ArrayList<>();
+        for (int i = 0; i < hashTable.getCapacity(); i++) {
+            LinkedList<User> chain = hashTable.getChain(i);
+            if (chain != null) {
+                users.addAll(chain);
+            }
+        }
+        return users;
+    }
+
+    public HashTable getHashTable() {
+        return hashTable;
+    }
+
+    public FileManager getFileManager() {
+        return fileManager;
     }
 }

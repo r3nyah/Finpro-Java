@@ -1,12 +1,22 @@
+package main.java.util;
+
 import java.io.*;
-import java.util.List;
 import java.util.LinkedList;
+import main.java.model.User;
+import main.java.service.HashTable;
 
 public class FileManager {
     private static final String FILE_NAME = "users.txt";
+    private static final String FILE_PATH = "src/main/resources/" + FILE_NAME;
 
     public void loadUsers(HashTable hashTable) {
-        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_NAME))) {
+        File file = new File(FILE_PATH);
+        if (!file.exists()) {
+            System.out.println("File not found: " + FILE_PATH);
+            return;
+        }
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 User user = User.fromString(line);
@@ -14,12 +24,17 @@ public class FileManager {
             }
         } catch (IOException e) {
             System.out.println("An error occurred while loading users.");
+            e.printStackTrace();
         }
     }
 
     public void saveUsers(HashTable hashTable) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_NAME))) {
-            for (int i = 0; i < hashTable.getSize(); i++) {
+        File file = new File(FILE_PATH);
+        // Ensure the parent directory exists
+        file.getParentFile().mkdirs();
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+            for (int i = 0; i < hashTable.getCapacity(); i++) {
                 LinkedList<User> chain = hashTable.getChain(i);
                 if (chain != null) {
                     for (User user : chain) {
@@ -30,6 +45,7 @@ public class FileManager {
             }
         } catch (IOException e) {
             System.out.println("An error occurred while saving users.");
+            e.printStackTrace();
         }
     }
 }

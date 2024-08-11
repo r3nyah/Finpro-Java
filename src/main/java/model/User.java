@@ -1,3 +1,5 @@
+package main.java.model;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -18,24 +20,17 @@ public class User {
         return passwordHash;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public void setPassword(String password) {
-        this.passwordHash = hashPassword(password);
+    public static User fromString(String str) {
+        String[] parts = str.split(":");
+        if (parts.length == 2) {
+            return new User(parts[0], parts[1]);
+        }
+        throw new IllegalArgumentException("Invalid user string format");
     }
 
     @Override
     public String toString() {
         return username + ":" + passwordHash;
-    }
-
-    public static User fromString(String userData) {
-        String[] parts = userData.split(":");
-        User user = new User(parts[0], "");
-        user.passwordHash = parts[1];
-        return user;
     }
 
     private String hashPassword(String password) {
@@ -48,11 +43,7 @@ public class User {
             }
             return sb.toString();
         } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException("SHA-256 algorithm not found.");
+            throw new RuntimeException("Hashing algorithm not found", e);
         }
-    }
-
-    public boolean checkPassword(String password) {
-        return this.passwordHash.equals(hashPassword(password));
     }
 }
