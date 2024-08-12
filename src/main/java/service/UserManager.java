@@ -1,8 +1,7 @@
 package main.java.service;
 
-import main.java.model.User;
 import main.java.util.FileManager;
-
+import main.java.model.User;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -38,8 +37,13 @@ public class UserManager {
         String password = scanner.nextLine();
 
         User user = hashTable.search(username);
-        if (user != null && user.getPasswordHash().equals(new User(username, password).getPasswordHash())) {
-            System.out.println("Login successful!");
+        if (user != null) {
+            String hashedPassword = user.getPasswordHash();
+            if (hashedPassword.equals(user.hashPassword(password))) {
+                System.out.println("Login successful!");
+            } else {
+                System.out.println("Invalid username or password.");
+            }
         } else {
             System.out.println("Invalid username or password.");
         }
@@ -52,7 +56,7 @@ public class UserManager {
         String password = scanner.nextLine();
 
         User user = hashTable.search(username);
-        if (user != null && user.getPasswordHash().equals(new User(username, password).getPasswordHash())) {
+        if (user != null && user.getPasswordHash().equals(user.hashPassword(password))) {
             System.out.print("Enter new username: ");
             String newUsername = scanner.nextLine();
             System.out.print("Enter new password: ");
@@ -71,7 +75,7 @@ public class UserManager {
         String password = scanner.nextLine();
 
         User user = hashTable.search(username);
-        if (user != null && user.getPasswordHash().equals(new User(username, password).getPasswordHash())) {
+        if (user != null && user.getPasswordHash().equals(user.hashPassword(password))) {
             hashTable.delete(username);
             System.out.println("User deleted successfully.");
         } else {

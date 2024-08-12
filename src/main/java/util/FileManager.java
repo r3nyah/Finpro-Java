@@ -19,8 +19,14 @@ public class FileManager {
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String line;
             while ((line = reader.readLine()) != null) {
+                System.out.println("Reading line: " + line); // Debugging line
                 User user = User.fromString(line);
-                hashTable.insert(user);
+                if (user != null) {
+                    System.out.println("Loaded user: " + user.getUsername()); // Debugging line
+                    hashTable.insert(user);
+                } else {
+                    System.out.println("Failed to parse user from line: " + line);
+                }
             }
         } catch (IOException e) {
             System.out.println("An error occurred while loading users.");
@@ -29,11 +35,7 @@ public class FileManager {
     }
 
     public void saveUsers(HashTable hashTable) {
-        File file = new File(FILE_PATH);
-        // Ensure the parent directory exists
-        file.getParentFile().mkdirs();
-
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH))) {
             for (int i = 0; i < hashTable.getCapacity(); i++) {
                 LinkedList<User> chain = hashTable.getChain(i);
                 if (chain != null) {
@@ -43,6 +45,7 @@ public class FileManager {
                     }
                 }
             }
+            System.out.println("Users saved to file successfully.");
         } catch (IOException e) {
             System.out.println("An error occurred while saving users.");
             e.printStackTrace();

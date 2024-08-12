@@ -20,30 +20,32 @@ public class User {
         return passwordHash;
     }
 
-    public static User fromString(String str) {
-        String[] parts = str.split(":");
-        if (parts.length == 2) {
-            return new User(parts[0], parts[1]);
-        }
-        throw new IllegalArgumentException("Invalid user string format");
-    }
-
-    @Override
-    public String toString() {
-        return username + ":" + passwordHash;
-    }
-
-    private String hashPassword(String password) {
+    public String hashPassword(String password) {
         try {
-            MessageDigest md = MessageDigest.getInstance("SHA-256");
-            byte[] hashBytes = md.digest(password.getBytes());
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hash = digest.digest(password.getBytes());
             StringBuilder sb = new StringBuilder();
-            for (byte b : hashBytes) {
+            for (byte b : hash) {
                 sb.append(String.format("%02x", b));
             }
             return sb.toString();
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException("Hashing algorithm not found", e);
         }
+    }
+
+    public static User fromString(String line) {
+        String[] parts = line.split(":");
+        if (parts.length == 2) {
+            User user = new User(parts[0], "");
+            user.passwordHash = parts[1]; // Directly set the password hash without hashing again
+            return user;
+        }
+        return null;
+    }
+
+    @Override
+    public String toString() {
+        return username + ":" + passwordHash; // Format: username:passwordHash
     }
 }
