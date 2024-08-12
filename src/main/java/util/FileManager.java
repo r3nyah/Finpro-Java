@@ -16,22 +16,22 @@ public class FileManager {
             return;
         }
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                System.out.println("Reading line: " + line); // Debugging line
-                User user = User.fromString(line);
-                if (user != null) {
-                    System.out.println("Loaded user: " + user.getUsername()); // Debugging line
-                    hashTable.insert(user);
-                } else {
-                    System.out.println("Failed to parse user from line: " + line);
-                }
-            }
-        } catch (IOException e) {
-            System.out.println("An error occurred while loading users.");
-            e.printStackTrace();
-        }
+//        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+//            String line;
+//            while ((line = reader.readLine()) != null) {
+//                System.out.println("Reading line: " + line); // Debugging line
+//                User user = User.fromString(line);
+//                if (user != null) {
+//                    System.out.println("Loaded user: " + user.getUsername()); // Debugging line
+//                    hashTable.insert(user);
+//                } else {
+//                    System.out.println("Failed to parse user from line: " + line);
+//                }
+//            }
+//        } catch (IOException e) {
+//            System.out.println("An error occurred while loading users.");
+//            e.printStackTrace();
+//        }
     }
 
     public void saveUsers(HashTable hashTable) {

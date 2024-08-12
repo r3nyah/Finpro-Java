@@ -1,7 +1,8 @@
 package main.java.service;
 
-import main.java.util.FileManager;
 import main.java.model.User;
+import main.java.util.FileManager;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -17,6 +18,7 @@ public class UserManager {
     }
 
     public void register(Scanner scanner) {
+        clearScreen();
         System.out.print("Enter username: ");
         String username = scanner.nextLine();
         System.out.print("Enter password: ");
@@ -28,9 +30,11 @@ public class UserManager {
             hashTable.insert(new User(username, password));
             System.out.println("Registration successful!");
         }
+        waitForEnter(scanner);
     }
 
-    public void login(Scanner scanner) {
+    public boolean login(Scanner scanner) {
+        clearScreen();
         System.out.print("Enter username: ");
         String username = scanner.nextLine();
         System.out.print("Enter password: ");
@@ -41,15 +45,17 @@ public class UserManager {
             String hashedPassword = user.getPasswordHash();
             if (hashedPassword.equals(user.hashPassword(password))) {
                 System.out.println("Login successful!");
-            } else {
-                System.out.println("Invalid username or password.");
+                waitForEnter(scanner);
+                return true;
             }
-        } else {
-            System.out.println("Invalid username or password.");
         }
+        System.out.println("Invalid username or password.");
+        waitForEnter(scanner);
+        return false;
     }
 
     public void updateUser(Scanner scanner) {
+        clearScreen();
         System.out.print("Enter your current username: ");
         String username = scanner.nextLine();
         System.out.print("Enter your current password: ");
@@ -66,9 +72,11 @@ public class UserManager {
         } else {
             System.out.println("Invalid credentials. Update failed.");
         }
+        waitForEnter(scanner);
     }
 
     public void deleteUser(Scanner scanner) {
+        clearScreen();
         System.out.print("Enter your username: ");
         String username = scanner.nextLine();
         System.out.print("Enter your password: ");
@@ -81,6 +89,21 @@ public class UserManager {
         } else {
             System.out.println("Invalid credentials. Deletion failed.");
         }
+        waitForEnter(scanner);
+    }
+
+    public void showAllUsers() {
+        clearScreen();
+        List<User> users = getAllUsers();
+        if (users.isEmpty()) {
+            System.out.println("No users found.");
+        } else {
+            System.out.println("Registered Users:");
+            for (User user : users) {
+                System.out.println(user.getUsername());
+            }
+        }
+        waitForEnter(new Scanner(System.in));
     }
 
     public List<User> getAllUsers() {
@@ -100,5 +123,23 @@ public class UserManager {
 
     public FileManager getFileManager() {
         return fileManager;
+    }
+
+    public static void clearScreen() {
+        try {
+            if (System.getProperty("os.name").contains("Windows")) {
+                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+            } else {
+                System.out.print("\033[H\033[2J");
+                System.out.flush();
+            }
+        } catch (Exception e) {
+            System.out.println("Error clearing the screen: " + e.getMessage());
+        }
+    }
+
+    private void waitForEnter(Scanner scanner) {
+        System.out.println("Press Enter to continue...");
+        scanner.nextLine();
     }
 }
