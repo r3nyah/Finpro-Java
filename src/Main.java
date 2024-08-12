@@ -1,29 +1,17 @@
 import main.java.service.LoginRegisterSystem;
+import main.java.util.CenterScreen;
 
 public class Main {
     public static void main(String[] args) {
-        clearScreen();
-        showLoadingAnimation(5); // Show loading animation for 5 seconds
-        clearScreen();
+        CenterScreen.clearScreen();
+        //showLoadingAnimation(5); // Show loading animation for 5 seconds
+        CenterScreen.clearScreen();
         LoginRegisterSystem system = new LoginRegisterSystem();
         system.run();
     }
 
-    public static void clearScreen() {
-        try {
-            if (System.getProperty("os.name").contains("Windows")) {
-                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
-            } else {
-                System.out.print("\033[H\033[2J");
-                System.out.flush();
-            }
-        } catch (Exception e) {
-            System.out.println("Error clearing the screen: " + e.getMessage());
-        }
-    }
-
     public static void showLoadingAnimation(int seconds) {
-        System.out.print("Loading");
+        CenterScreen.centerPrint("Loading");
         for (int i = 0; i < seconds; i++) {
             try {
                 Thread.sleep(1000);

@@ -1,6 +1,8 @@
 package main.java.service;
 
 import java.util.Scanner;
+
+import main.java.util.CenterScreen;
 import main.java.util.FileManager;
 
 public class LoginRegisterSystem {
@@ -16,72 +18,69 @@ public class LoginRegisterSystem {
     public void run() {
         Scanner scanner = new Scanner(System.in);
         while (true) {
-            clearScreen();
-            System.out.println("Welcome to the Login/Register System");
-            System.out.println("1. Register");
-            System.out.println("2. Login");
-            System.out.println("3. Exit");
-            System.out.print("Enter your choice: ");
-            int choice = scanner.nextInt();
-            scanner.nextLine(); // Consume newline
+            CenterScreen.clearScreen();
+            CenterScreen.centerPrint("Welcome to the Login/Register System");
+            CenterScreen.centerPrint("1. Register");
+            CenterScreen.centerPrint("2. Login");
+            CenterScreen.centerPrint("3. Exit");
+            String choice = CenterScreen.centerInput("Enter your choice: ");
 
             switch (choice) {
-                case 1:
+                case "1":
                     userManager.register(scanner);
                     break;
-                case 2:
+                case "2":
                     if (userManager.login(scanner)) {
-                        clearScreen();
+                        CenterScreen.clearScreen();
                         manageAccounts(scanner); // Display account management options
                     }
                     break;
-                case 3:
+                case "3":
                     userManager.getFileManager().saveUsers(userManager.getHashTable());
-                    clearScreen(); // Clear screen before exiting
-                    System.out.println("Goodbye!");
+                    CenterScreen.clearScreen(); // Clear screen before exiting
+                    CenterScreen.centerPrint("Goodbye!");
                     scanner.close();
                     return;
                 default:
-                    System.out.println("Invalid choice. Please try again.");
+                    CenterScreen.centerPrint("Invalid choice. Please try again.");
             }
-            System.out.println();
+            CenterScreen.centerPrint(""); // Adds a newline
         }
     }
 
     private void manageAccounts(Scanner scanner) {
         while (true) {
-            clearScreen();
-            System.out.println("Account Management");
-            System.out.println("1. Create Account");
-            System.out.println("2. Read Account");
-            System.out.println("3. Update Account");
-            System.out.println("4. Delete Account");
-            System.out.println("5. Logout");
-            System.out.print("Enter your choice: ");
-            int choice = scanner.nextInt();
-            scanner.nextLine(); // Consume newline
+            CenterScreen.clearScreen();
+            CenterScreen.centerPrint("Account Management");
+            CenterScreen.centerPrint("1. Create Account");
+            CenterScreen.centerPrint("2. Read Account");
+            CenterScreen.centerPrint("3. Update Account");
+            CenterScreen.centerPrint("4. Delete Account");
+            CenterScreen.centerPrint("5. Logout");
+            String choice = CenterScreen.centerInput("Enter your choice: ");
 
             switch (choice) {
-                case 1:
+                case "1":
                     userManager.register(scanner);
                     break;
-                case 2:
+                case "2":
                     userManager.showAllUsers();
                     break;
-                case 3:
+                case "3":
                     userManager.updateUser(scanner);
                     break;
-                case 4:
+                case "4":
                     userManager.deleteUser(scanner);
                     break;
-                case 5:
+                case "5":
                     return;
                 default:
-                    System.out.println("Invalid choice. Please try again.");
+                    CenterScreen.centerPrint("Invalid choice. Please try again.");
             }
-            System.out.println();
+            CenterScreen.centerPrint(""); // Adds a newline
         }
     }
+
 
     public static void clearScreen() {
         try {

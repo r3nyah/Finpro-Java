@@ -1,6 +1,7 @@
 package main.java.service;
 
 import main.java.model.User;
+import main.java.util.CenterScreen;
 import main.java.util.FileManager;
 
 import java.util.ArrayList;
@@ -18,93 +19,85 @@ public class UserManager {
     }
 
     public void register(Scanner scanner) {
-        clearScreen();
-        System.out.print("Enter username: ");
-        String username = scanner.nextLine();
-        System.out.print("Enter password: ");
-        String password = scanner.nextLine();
+        CenterScreen.clearScreen();
+        String username = CenterScreen.centerInput("Enter username: ");
+        String password = CenterScreen.centerInput("Enter password: ");
 
         if (hashTable.search(username) != null) {
-            System.out.println("Username already exists. Please try another.");
+            CenterScreen.centerPrint("Username already exists. Please try another.");
         } else {
             hashTable.insert(new User(username, password));
-            System.out.println("Registration successful!");
+            CenterScreen.centerPrint("Registration successful!");
         }
         waitForEnter(scanner);
     }
 
     public boolean login(Scanner scanner) {
-        clearScreen();
-        System.out.print("Enter username: ");
-        String username = scanner.nextLine();
-        System.out.print("Enter password: ");
-        String password = scanner.nextLine();
+        CenterScreen.clearScreen();
+        String username = CenterScreen.centerInput("Enter username: ");
+        String password = CenterScreen.centerInput("Enter password: ");
 
         User user = hashTable.search(username);
         if (user != null) {
             String hashedPassword = user.getPasswordHash();
             if (hashedPassword.equals(user.hashPassword(password))) {
-                System.out.println("Login successful!");
+                CenterScreen.centerPrint("Login successful!");
                 waitForEnter(scanner);
                 return true;
             }
         }
-        System.out.println("Invalid username or password.");
+        CenterScreen.centerPrint("Invalid username or password.");
         waitForEnter(scanner);
         return false;
     }
 
     public void updateUser(Scanner scanner) {
-        clearScreen();
-        System.out.print("Enter your current username: ");
-        String username = scanner.nextLine();
-        System.out.print("Enter your current password: ");
-        String password = scanner.nextLine();
+        CenterScreen.clearScreen();
+        String username = CenterScreen.centerInput("Enter your current username: ");
+        String password = CenterScreen.centerInput("Enter your current password: ");
 
         User user = hashTable.search(username);
         if (user != null && user.getPasswordHash().equals(user.hashPassword(password))) {
-            System.out.print("Enter new username: ");
-            String newUsername = scanner.nextLine();
-            System.out.print("Enter new password: ");
-            String newPassword = scanner.nextLine();
+            String newUsername = CenterScreen.centerInput("Enter new username: ");
+            String newPassword = CenterScreen.centerInput("Enter new password: ");
             hashTable.update(username, new User(newUsername, newPassword));
-            System.out.println("User updated successfully.");
+            CenterScreen.centerPrint("User updated successfully.");
         } else {
-            System.out.println("Invalid credentials. Update failed.");
+            CenterScreen.centerPrint("Invalid credentials. Update failed.");
         }
         waitForEnter(scanner);
     }
 
+
     public void deleteUser(Scanner scanner) {
-        clearScreen();
-        System.out.print("Enter your username: ");
-        String username = scanner.nextLine();
-        System.out.print("Enter your password: ");
-        String password = scanner.nextLine();
+        CenterScreen.clearScreen();
+        String username = CenterScreen.centerInput("Enter your username: ");
+        String password = CenterScreen.centerInput("Enter your password: ");
 
         User user = hashTable.search(username);
         if (user != null && user.getPasswordHash().equals(user.hashPassword(password))) {
             hashTable.delete(username);
-            System.out.println("User deleted successfully.");
+            CenterScreen.centerPrint("User deleted successfully.");
         } else {
-            System.out.println("Invalid credentials. Deletion failed.");
+            CenterScreen.centerPrint("Invalid credentials. Deletion failed.");
         }
         waitForEnter(scanner);
     }
 
     public void showAllUsers() {
-        clearScreen();
+        CenterScreen.clearScreen();
         List<User> users = getAllUsers();
         if (users.isEmpty()) {
-            System.out.println("No users found.");
+            CenterScreen.centerPrint("No users found.");
         } else {
-            System.out.println("Registered Users:");
+            CenterScreen.centerPrint("Registered Users:");
             for (User user : users) {
-                System.out.println(user.getUsername());
+                CenterScreen.centerPrint(user.getUsername());
             }
         }
         waitForEnter(new Scanner(System.in));
     }
+
 
     public List<User> getAllUsers() {
         List<User> users = new ArrayList<>();
@@ -125,21 +118,8 @@ public class UserManager {
         return fileManager;
     }
 
-    public static void clearScreen() {
-        try {
-            if (System.getProperty("os.name").contains("Windows")) {
-                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
-            } else {
-                System.out.print("\033[H\033[2J");
-                System.out.flush();
-            }
-        } catch (Exception e) {
-            System.out.println("Error clearing the screen: " + e.getMessage());
-        }
-    }
-
     private void waitForEnter(Scanner scanner) {
-        System.out.println("Press Enter to continue...");
+        CenterScreen.centerPrint("Press Enter to continue...");
         scanner.nextLine();
     }
 }
