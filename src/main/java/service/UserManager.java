@@ -3,6 +3,7 @@ package main.java.service;
 import main.java.model.User;
 import main.java.util.CenterScreen;
 import main.java.util.FileManager;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -116,5 +117,25 @@ public class UserManager {
 
     public FileManager getFileManager() {
         return fileManager;
+    }
+
+    private int calculateTableWidth(String[] headers, List<String[]> rows) {
+        int maxUsernameLength = headers[0].length();
+        int maxPasswordHashLength = headers[1].length();
+
+        for (String[] row : rows) {
+            maxUsernameLength = Math.max(maxUsernameLength, row[0].length());
+            maxPasswordHashLength = Math.max(maxPasswordHashLength, row[1].length());
+        }
+
+        return maxUsernameLength + maxPasswordHashLength + 7; // Adjust for padding and separators
+    }
+
+    private String createTableLine(String[] row, int tableWidth) {
+        return String.format("| %-20s | %-50s |", row[0], row[1]);
+    }
+
+    private String createSeparator(int tableWidth) {
+        return "+----------------------+----------------------------------------------------+";
     }
 }

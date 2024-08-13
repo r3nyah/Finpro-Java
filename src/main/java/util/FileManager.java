@@ -9,7 +9,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class FileManager {
-    private static final String FILE_NAME = "users.txt";
+    private static final String FILE_NAME = "D:/Telkom/Java-Projects/Finpro/Finpro-Java/src/main/resources/User.txt"; // Updated file path
 
     public void loadUsers(HashTable hashTable) {
         try (BufferedReader reader = new BufferedReader(new FileReader(FILE_NAME))) {
