@@ -1,24 +1,28 @@
 package main.java.util;
 
-import java.util.Scanner;
-
 public class CenterScreen {
 
     private static final int DEFAULT_TERMINAL_WIDTH = 80;
 
-    // Centered print method
     public static void centerPrint(String text) {
+        if (text == null) {
+            text = "";
+        }
+
         int width = DEFAULT_TERMINAL_WIDTH;
         int padding = (width - text.length()) / 2;
-        String format = "%" + padding + "s%s%n";
-        System.out.printf(format, "", text);
+
+        if (padding > 0) {
+            String paddingString = " ".repeat(padding);
+            System.out.println(paddingString + text);
+        } else {
+            System.out.println(text); // If text is too long, just print it as is
+        }
     }
 
-    // Left-aligned input method
     public static String leftInput(String prompt) {
-        Scanner scanner = new Scanner(System.in);
-        System.out.print(prompt);  // No centering, just print the prompt
-        return scanner.nextLine();
+        System.out.print(prompt);
+        return new java.util.Scanner(System.in).nextLine();
     }
 
     public static void clearScreen() {
@@ -30,7 +34,7 @@ public class CenterScreen {
                 System.out.flush();
             }
         } catch (Exception e) {
-            centerPrint("Error clearing the screen: " + e.getMessage());
+            System.out.println("Error clearing the screen: " + e.getMessage());
         }
     }
 }

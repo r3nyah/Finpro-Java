@@ -89,10 +89,12 @@ public class UserManager {
             CenterScreen.centerPrint("No users found.");
         } else {
             for (User user : users) {
-                CenterScreen.centerPrint(user.getUsername());
+                CenterScreen.centerPrint("Username: " + user.getUsername());
+                CenterScreen.centerPrint("Password Hash: " + user.getPasswordHash());
+                CenterScreen.centerPrint(""); // Adds a newline for better readability
             }
         }
-        CenterScreen.centerPrint(""); // Adds a newline
+        waitForEnter(new Scanner(System.in)); // Wait for the user to press Enter before returning
     }
 
     private List<User> getAllUsers() {
