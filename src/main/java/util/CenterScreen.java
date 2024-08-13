@@ -6,6 +6,7 @@ public class CenterScreen {
 
     private static final int DEFAULT_TERMINAL_WIDTH = 80;
 
+    // Centered print method
     public static void centerPrint(String text) {
         int width = DEFAULT_TERMINAL_WIDTH;
         int padding = (width - text.length()) / 2;
@@ -13,12 +14,10 @@ public class CenterScreen {
         System.out.printf(format, "", text);
     }
 
-    public static String centerInput(String prompt) {
+    // Left-aligned input method
+    public static String leftInput(String prompt) {
         Scanner scanner = new Scanner(System.in);
-        int width = DEFAULT_TERMINAL_WIDTH;
-        int padding = (width - prompt.length()) / 2;
-        String format = "%" + padding + "s";
-        System.out.printf(format, prompt);
+        System.out.print(prompt);  // No centering, just print the prompt
         return scanner.nextLine();
     }
 

@@ -1,7 +1,6 @@
 package main.java.service;
 
 import java.util.Scanner;
-
 import main.java.util.CenterScreen;
 import main.java.util.FileManager;
 
@@ -23,7 +22,7 @@ public class LoginRegisterSystem {
             CenterScreen.centerPrint("1. Register");
             CenterScreen.centerPrint("2. Login");
             CenterScreen.centerPrint("3. Exit");
-            String choice = CenterScreen.centerInput("Enter your choice: ");
+            String choice = CenterScreen.leftInput("Enter your choice: ");
 
             switch (choice) {
                 case "1":
@@ -57,7 +56,7 @@ public class LoginRegisterSystem {
             CenterScreen.centerPrint("3. Update Account");
             CenterScreen.centerPrint("4. Delete Account");
             CenterScreen.centerPrint("5. Logout");
-            String choice = CenterScreen.centerInput("Enter your choice: ");
+            String choice = CenterScreen.leftInput("Enter your choice: ");
 
             switch (choice) {
                 case "1":
@@ -78,20 +77,6 @@ public class LoginRegisterSystem {
                     CenterScreen.centerPrint("Invalid choice. Please try again.");
             }
             CenterScreen.centerPrint(""); // Adds a newline
-        }
-    }
-
-
-    public static void clearScreen() {
-        try {
-            if (System.getProperty("os.name").contains("Windows")) {
-                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
-            } else {
-                System.out.print("\033[H\033[2J");
-                System.out.flush();
-            }
-        } catch (Exception e) {
-            System.out.println("Error clearing the screen: " + e.getMessage());
         }
     }
 }

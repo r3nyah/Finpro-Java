@@ -3,7 +3,6 @@ package main.java.service;
 import main.java.model.User;
 import main.java.util.CenterScreen;
 import main.java.util.FileManager;
-
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -20,8 +19,8 @@ public class UserManager {
 
     public void register(Scanner scanner) {
         CenterScreen.clearScreen();
-        String username = CenterScreen.centerInput("Enter username: ");
-        String password = CenterScreen.centerInput("Enter password: ");
+        String username = CenterScreen.leftInput("Enter username: ");
+        String password = CenterScreen.leftInput("Enter password: ");
 
         if (hashTable.search(username) != null) {
             CenterScreen.centerPrint("Username already exists. Please try another.");
@@ -34,8 +33,8 @@ public class UserManager {
 
     public boolean login(Scanner scanner) {
         CenterScreen.clearScreen();
-        String username = CenterScreen.centerInput("Enter username: ");
-        String password = CenterScreen.centerInput("Enter password: ");
+        String username = CenterScreen.leftInput("Enter username: ");
+        String password = CenterScreen.leftInput("Enter password: ");
 
         User user = hashTable.search(username);
         if (user != null) {
@@ -53,13 +52,13 @@ public class UserManager {
 
     public void updateUser(Scanner scanner) {
         CenterScreen.clearScreen();
-        String username = CenterScreen.centerInput("Enter your current username: ");
-        String password = CenterScreen.centerInput("Enter your current password: ");
+        String username = CenterScreen.leftInput("Enter your current username: ");
+        String password = CenterScreen.leftInput("Enter your current password: ");
 
         User user = hashTable.search(username);
         if (user != null && user.getPasswordHash().equals(user.hashPassword(password))) {
-            String newUsername = CenterScreen.centerInput("Enter new username: ");
-            String newPassword = CenterScreen.centerInput("Enter new password: ");
+            String newUsername = CenterScreen.leftInput("Enter new username: ");
+            String newPassword = CenterScreen.leftInput("Enter new password: ");
             hashTable.update(username, new User(newUsername, newPassword));
             CenterScreen.centerPrint("User updated successfully.");
         } else {
@@ -68,11 +67,10 @@ public class UserManager {
         waitForEnter(scanner);
     }
 
-
     public void deleteUser(Scanner scanner) {
         CenterScreen.clearScreen();
-        String username = CenterScreen.centerInput("Enter your username: ");
-        String password = CenterScreen.centerInput("Enter your password: ");
+        String username = CenterScreen.leftInput("Enter your username: ");
+        String password = CenterScreen.leftInput("Enter your password: ");
 
         User user = hashTable.search(username);
         if (user != null && user.getPasswordHash().equals(user.hashPassword(password))) {
@@ -90,24 +88,24 @@ public class UserManager {
         if (users.isEmpty()) {
             CenterScreen.centerPrint("No users found.");
         } else {
-            CenterScreen.centerPrint("Registered Users:");
             for (User user : users) {
                 CenterScreen.centerPrint(user.getUsername());
             }
         }
-        waitForEnter(new Scanner(System.in));
+        CenterScreen.centerPrint(""); // Adds a newline
     }
 
-
-    public List<User> getAllUsers() {
+    private List<User> getAllUsers() {
         List<User> users = new ArrayList<>();
         for (int i = 0; i < hashTable.getCapacity(); i++) {
             LinkedList<User> chain = hashTable.getChain(i);
-            if (chain != null) {
-                users.addAll(chain);
-            }
+            users.addAll(chain);
         }
         return users;
+    }
+
+    private void waitForEnter(Scanner scanner) {
+        CenterScreen.leftInput("Press Enter to continue...");
     }
 
     public HashTable getHashTable() {
@@ -116,10 +114,5 @@ public class UserManager {
 
     public FileManager getFileManager() {
         return fileManager;
-    }
-
-    private void waitForEnter(Scanner scanner) {
-        CenterScreen.centerPrint("Press Enter to continue...");
-        scanner.nextLine();
     }
 }
