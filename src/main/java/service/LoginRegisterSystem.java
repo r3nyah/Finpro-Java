@@ -22,7 +22,7 @@ public class LoginRegisterSystem {
             CenterScreen.centerPrint("1. Register");
             CenterScreen.centerPrint("2. Login");
             CenterScreen.centerPrint("3. Exit");
-            String choice = CenterScreen.leftInput("Enter your choice: ");
+            String choice = CenterScreen.leftInput("Enter your choice: ", true);
 
             switch (choice) {
                 case "1":
@@ -56,7 +56,7 @@ public class LoginRegisterSystem {
             CenterScreen.centerPrint("3. Update Account");
             CenterScreen.centerPrint("4. Delete Account");
             CenterScreen.centerPrint("5. Logout");
-            String choice = CenterScreen.leftInput("Enter your choice: ");
+            String choice = CenterScreen.leftInput("Enter your choice: ", true);
 
             switch (choice) {
                 case "1":

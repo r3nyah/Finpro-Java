@@ -20,9 +20,24 @@ public class CenterScreen {
         }
     }
 
-    public static String leftInput(String prompt) {
-        System.out.print(prompt);
-        return new java.util.Scanner(System.in).nextLine();
+    public static String leftInput(String prompt, boolean validate) {
+        String input;
+        do {
+            System.out.print(prompt);
+            input = new java.util.Scanner(System.in).nextLine().trim();
+
+            if (validate && (input.isEmpty() || !isValidInput(input))) {
+                centerPrint("Invalid input. Please try again.");
+            } else {
+                break;
+            }
+        } while (true);
+
+        return input;
+    }
+
+    private static boolean isValidInput(String input) {
+        return input.matches("^[a-zA-Z0-9]*$"); // Only alphanumeric characters are valid
     }
 
     public static void clearScreen() {
