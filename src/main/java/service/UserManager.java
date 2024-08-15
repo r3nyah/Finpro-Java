@@ -23,10 +23,10 @@ public class UserManager {
         String password = CenterScreen.leftInput("Enter password: ", true);
 
         if (hashTable.search(username) != null) {
-            CenterScreen.centerPrint("Username already exists. Please try another.");
+            CenterScreen.animatedCenterPrint("Username already exists. Please try another.");
         } else {
             hashTable.insert(new User(username, password));
-            CenterScreen.centerPrint("Registration successful!");
+            CenterScreen.animatedCenterPrint("Registration successful!");
         }
         waitForEnter(scanner);
     }
@@ -40,12 +40,12 @@ public class UserManager {
         if (user != null) {
             String hashedPassword = user.getPasswordHash();
             if (hashedPassword.equals(user.hashPassword(password))) {
-                CenterScreen.centerPrint("Login successful!");
+                CenterScreen.animatedCenterPrint("Login successful!");
                 waitForEnter(scanner);
                 return true;
             }
         }
-        CenterScreen.centerPrint("Invalid username or password.");
+        CenterScreen.animatedCenterPrint("Invalid username or password.");
         waitForEnter(scanner);
         return false;
     }
@@ -60,9 +60,9 @@ public class UserManager {
             String newUsername = CenterScreen.leftInput("Enter new username: ", true);
             String newPassword = CenterScreen.leftInput("Enter new password: ", true);
             hashTable.update(username, new User(newUsername, newPassword));
-            CenterScreen.centerPrint("User updated successfully.");
+            CenterScreen.animatedCenterPrint("User updated successfully.");
         } else {
-            CenterScreen.centerPrint("Invalid credentials. Update failed.");
+            CenterScreen.animatedCenterPrint("Invalid credentials. Update failed.");
         }
         waitForEnter(scanner);
     }
@@ -75,47 +75,26 @@ public class UserManager {
         User user = hashTable.search(username);
         if (user != null && user.getPasswordHash().equals(user.hashPassword(password))) {
             hashTable.delete(username);
-            CenterScreen.centerPrint("User deleted successfully.");
+            CenterScreen.animatedCenterPrint("User deleted successfully.");
         } else {
-            CenterScreen.centerPrint("Invalid credentials. Deletion failed.");
+            CenterScreen.animatedCenterPrint("Invalid credentials. Deletion failed.");
         }
         waitForEnter(scanner);
     }
 
     public void showAllUsers() {
-        CenterScreen.clearScreen();
         List<User> users = getAllUsers();
+        CenterScreen.clearScreen();
+        CenterScreen.animatedCenterPrint("All Registered Users:");
 
         if (users.isEmpty()) {
-            CenterScreen.centerPrint("No users found.");
+            CenterScreen.animatedCenterPrint("No users found.");
         } else {
-            // Define table headers
-            String[] headers = {"Username", "Password Hash"};
-
-            // Prepare rows for the table
-            List<String[]> rows = new ArrayList<>();
             for (User user : users) {
-                rows.add(new String[]{user.getUsername(), user.getPasswordHash()});
+                CenterScreen.centerPrint(user.getUsername());
             }
-
-            // Calculate the width of the table
-            int tableWidth = calculateTableWidth(headers, rows);
-
-            // Print table header
-            CenterScreen.centerPrint(createSeparator(tableWidth));
-            CenterScreen.centerPrint(createTableLine(headers, tableWidth));
-            CenterScreen.centerPrint(createSeparator(tableWidth));
-
-            // Print table rows
-            for (String[] row : rows) {
-                CenterScreen.centerPrint(createTableLine(row, tableWidth));
-            }
-
-            // Print bottom separator
-            CenterScreen.centerPrint(createSeparator(tableWidth));
         }
-
-        waitForEnter(new Scanner(System.in)); // Wait for the user to press Enter before returning
+        CenterScreen.animatedCenterPrint(""); // Adds a newline
     }
 
     private List<User> getAllUsers() {
@@ -127,36 +106,16 @@ public class UserManager {
         return users;
     }
 
-    private void waitForEnter(Scanner scanner) {
-        CenterScreen.leftInput("Press Enter to continue...", false);
-    }
-
-    private int calculateTableWidth(String[] headers, List<String[]> rows) {
-        int maxUsernameLength = headers[0].length();
-        int maxPasswordHashLength = headers[1].length();
-
-        for (String[] row : rows) {
-            maxUsernameLength = Math.max(maxUsernameLength, row[0].length());
-            maxPasswordHashLength = Math.max(maxPasswordHashLength, row[1].length());
-        }
-
-        // Adjust for padding and separators
-        return maxUsernameLength + maxPasswordHashLength + 7;
-    }
-
-    private String createTableLine(String[] row, int tableWidth) {
-        return String.format("| %-20s | %-64s |", row[0], row[1]);
-    }
-
-    private String createSeparator(int tableWidth) {
-        return "+----------------------+------------------------------------------------------------------+";
-    }
-
     public HashTable getHashTable() {
         return hashTable;
     }
 
     public FileManager getFileManager() {
         return fileManager;
+    }
+
+    private void waitForEnter(Scanner scanner) {
+        CenterScreen.animatedCenterPrint("Press [Enter] to continue...");
+        scanner.nextLine();
     }
 }

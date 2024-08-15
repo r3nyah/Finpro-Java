@@ -11,7 +11,7 @@ public class Main {
     }
 
     public static void showLoadingAnimation(int seconds) {
-        CenterScreen.centerPrint("Loading");    
+        CenterScreen.centerPrint("Loading");
         for (int i = 0; i < seconds; i++) {
             try {
                 Thread.sleep(1000);

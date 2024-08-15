@@ -2,6 +2,7 @@ package main.java.util;
 
 import main.java.model.User;
 import main.java.service.HashTable;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
@@ -9,10 +10,12 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class FileManager {
-    private static final String FILE_NAME = "D:/Telkom/Java-Projects/Finpro/Finpro-Java/src/main/resources/User.txt"; // Updated file path
+    // Use an absolute path to avoid confusion with relative paths
+    private static final String FILE_PATH = "D:/Telkom/Java-Projects/Finpro/Finpro-Java/src/main/java/resources/User.txt";
+    //private static final String FILE_PATH = "src/main/java/resources/User.txt";
 
     public void loadUsers(HashTable hashTable) {
-        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_NAME))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 User user = User.fromString(line);
@@ -21,12 +24,12 @@ public class FileManager {
                 }
             }
         } catch (IOException e) {
-            CenterScreen.centerPrint("Error loading users: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
     public void saveUsers(HashTable hashTable) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_NAME))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH))) {
             for (int i = 0; i < hashTable.getCapacity(); i++) {
                 for (User user : hashTable.getChain(i)) {
                     writer.write(user.toString());
@@ -34,7 +37,7 @@ public class FileManager {
                 }
             }
         } catch (IOException e) {
-            CenterScreen.centerPrint("Error saving users: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 }

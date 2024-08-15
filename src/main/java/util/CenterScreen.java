@@ -4,6 +4,46 @@ public class CenterScreen {
 
     private static final int DEFAULT_TERMINAL_WIDTH = 80;
 
+    public static void animatedCenterPrint(String text) {
+        if (text == null) {
+            text = "";
+        }
+
+        int width = DEFAULT_TERMINAL_WIDTH;
+        int padding = (width - text.length()) / 2;
+
+        // RGB color sequence
+        String[] colors = {
+                "\u001B[31m", // Red
+                "\u001B[32m", // Green
+                "\u001B[34m", // Blue
+                "\u001B[33m", // Yellow
+                "\u001B[35m", // Magenta
+                "\u001B[36m", // Cyan
+        };
+
+        // Loop through the colors
+        for (int i = 0; i < 10; i++) { // Repeat the animation 10 times
+            for (String color : colors) {
+                if (padding > 0) {
+                    String paddingString = " ".repeat(padding);
+                    System.out.print("\r" + color + paddingString + text);
+                } else {
+                    System.out.print("\r" + color + text); // If text is too long, just print it as is
+                }
+
+                try {
+                    Thread.sleep(1); // Adjust delay for effect speed
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+            }
+        }
+
+        // Reset color
+        System.out.println("\u001B[0m");
+    }
+
     public static void centerPrint(String text) {
         if (text == null) {
             text = "";

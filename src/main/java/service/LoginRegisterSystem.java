@@ -18,10 +18,10 @@ public class LoginRegisterSystem {
         Scanner scanner = new Scanner(System.in);
         while (true) {
             CenterScreen.clearScreen();
-            CenterScreen.centerPrint("Welcome to the Login/Register System");
-            CenterScreen.centerPrint("1. Register");
-            CenterScreen.centerPrint("2. Login");
-            CenterScreen.centerPrint("3. Exit");
+            CenterScreen.animatedCenterPrint("Welcome to the Login/Register System");
+            CenterScreen.animatedCenterPrint("1. Register");
+            CenterScreen.animatedCenterPrint("2. Login");
+            CenterScreen.animatedCenterPrint("3. Exit");
             String choice = CenterScreen.leftInput("Enter your choice: ", true);
 
             switch (choice) {
@@ -37,25 +37,25 @@ public class LoginRegisterSystem {
                 case "3":
                     userManager.getFileManager().saveUsers(userManager.getHashTable());
                     CenterScreen.clearScreen(); // Clear screen before exiting
-                    CenterScreen.centerPrint("Goodbye!");
+                    CenterScreen.animatedCenterPrint("Goodbye!");
                     scanner.close();
                     return;
                 default:
-                    CenterScreen.centerPrint("Invalid choice. Please try again.");
+                    CenterScreen.animatedCenterPrint("Invalid choice. Please try again.");
             }
-            CenterScreen.centerPrint(""); // Adds a newline
+            CenterScreen.animatedCenterPrint(""); // Adds a newline
         }
     }
 
     private void manageAccounts(Scanner scanner) {
         while (true) {
             CenterScreen.clearScreen();
-            CenterScreen.centerPrint("Account Management");
-            CenterScreen.centerPrint("1. Create Account");
-            CenterScreen.centerPrint("2. Read Account");
-            CenterScreen.centerPrint("3. Update Account");
-            CenterScreen.centerPrint("4. Delete Account");
-            CenterScreen.centerPrint("5. Logout");
+            CenterScreen.animatedCenterPrint("Account Management");
+            CenterScreen.animatedCenterPrint("1. Create Account");
+            CenterScreen.animatedCenterPrint("2. Read Account");
+            CenterScreen.animatedCenterPrint("3. Update Account");
+            CenterScreen.animatedCenterPrint("4. Delete Account");
+            CenterScreen.animatedCenterPrint("5. Logout");
             String choice = CenterScreen.leftInput("Enter your choice: ", true);
 
             switch (choice) {
@@ -74,9 +74,9 @@ public class LoginRegisterSystem {
                 case "5":
                     return;
                 default:
-                    CenterScreen.centerPrint("Invalid choice. Please try again.");
+                    CenterScreen.animatedCenterPrint("Invalid choice. Please try again.");
             }
-            CenterScreen.centerPrint(""); // Adds a newline
+            CenterScreen.animatedCenterPrint(""); // Adds a newline
         }
     }
 }
