@@ -1,12 +1,12 @@
 package main.java.service;
 
-import main.java.model.User;
-import main.java.util.CenterScreen;
-import main.java.util.FileManager;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
+import main.java.model.User;
+import main.java.util.CenterScreen;
+import main.java.util.FileManager;
 
 public class UserManager {
     private HashTable hashTable;
@@ -85,18 +85,74 @@ public class UserManager {
     public void showAllUsers() {
         List<User> users = getAllUsers();
         CenterScreen.clearScreen();
-        CenterScreen.animatedCenterPrint("All Registered Users:");
-
+        CenterScreen.centerPrint("All Registered Users:");
+    
+        // Short delay to ensure terminal rendering
+        try {
+            Thread.sleep(100); // 100 milliseconds
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+    
         if (users.isEmpty()) {
-            CenterScreen.animatedCenterPrint("No users found.");
+            CenterScreen.centerPrint("No users found.");
         } else {
+            // Table header
+            String separator = "|----------|------------------------------------------------------------------|";
+            String header = "| Username | Password Hash                                                    |";
+    
+            // Colors for RGB animation
+            String[] colors = {
+                "\033[38;2;255;0;0m",  // Red
+                "\033[38;2;0;255;0m",  // Green
+                "\033[38;2;0;0;255m",  // Blue
+                "\033[38;2;255;255;0m",  // Yellow
+                "\033[38;2;0;255;255m",  // Cyan
+                "\033[38;2;255;0;255m"  // Magenta
+            };
+            String resetColor = "\033[0m";
+    
+            // Print table header with RGB animation
+            for (int i = 0; i < colors.length; i++) {
+                CenterScreen.centerPrint(colors[i] + separator + resetColor);
+                CenterScreen.centerPrint(colors[i] + header + resetColor);
+                CenterScreen.centerPrint(colors[i] + separator + resetColor);
+                try {
+                    Thread.sleep(200); // Delay between color changes
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+            }
+    
+            // Print each user entry with RGB animation
+            int colorIndex = 0;
             for (User user : users) {
-                CenterScreen.centerPrint(user.getUsername());
+                String userInfo = String.format("| %-8s | %-64s |", user.getUsername(), user.getPasswordHash());
+                CenterScreen.centerPrint(colors[colorIndex] + userInfo + resetColor);
+                colorIndex = (colorIndex + 1) % colors.length;
+                try {
+                    Thread.sleep(200); // Delay between color changes
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+            }
+    
+            // Print table footer with RGB animation
+            for (int i = 0; i < colors.length; i++) {
+                CenterScreen.centerPrint(colors[i] + separator + resetColor);
+                try {
+                    Thread.sleep(200); // Delay between color changes
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
             }
         }
-        CenterScreen.animatedCenterPrint(""); // Adds a newline
+    
+        // Pause after displaying users
+        CenterScreen.leftInput("Press [Enter] to return to the menu...", false);
     }
-
+    
+    
     private List<User> getAllUsers() {
         List<User> users = new ArrayList<>();
         for (int i = 0; i < hashTable.getCapacity(); i++) {
