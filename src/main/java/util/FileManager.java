@@ -7,11 +7,12 @@ import java.io.*;
 
 public class FileManager {
     // Use an absolute path to avoid confusion with relative paths
-    private static final String FILE_PATH = "D:/Telkom/Java-Projects/Finpro/Finpro-Java/src/main/java/resources/User.txt";
+    private static final String FILE_PATH = "D:\\Telkom\\JavaProjects\\Finpro\\FinproJava\\src\\main\\resources\\User.txt";
+    //D:\Telkom\JavaProjects\Finpro\FinproJava\src\main\resources
     //private static final String FILE_PATH = "src/main/java/resources/User.txt";
 
     public void loadUsers(HashTable hashTable) {
-        String filePath = "src/main/java/resources/User.txt"; // Adjust this path as necessary
+        String filePath = "D:\\Telkom\\JavaProjects\\Finpro\\FinproJava\\src\\main\\resources\\User.txt"; // Adjust this path as necessary
 
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
