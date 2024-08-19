@@ -17,29 +17,15 @@ public class UserManager {
         this.fileManager = fileManager;
     }
 
-    public void register(Scanner scanner) {
-        CenterScreen.clearScreen();
-        String username = CenterScreen.leftInput("Enter username: ", true);
-        String password = CenterScreen.leftInput("Enter password: ", true);
-
-        if (hashTable.search(username) != null) {
-            CenterScreen.animatedCenterPrint("Username already exists. Please try another.");
-        } else {
-            hashTable.insert(new User(username, password));
-            CenterScreen.animatedCenterPrint("Registration successful!");
-        }
-        waitForEnter(scanner);
-    }
-
     public boolean login(Scanner scanner) {
         CenterScreen.clearScreen();
         String username = CenterScreen.leftInput("Enter username: ", true);
         String password = CenterScreen.leftInput("Enter password: ", true);
-
+    
         User user = hashTable.search(username);
         if (user != null) {
-            String hashedPassword = user.getPasswordHash();
-            if (hashedPassword.equals(user.hashPassword(password))) {
+            String hashedPassword = User.hashPassword(password, user.getSalt());
+            if (hashedPassword.equals(user.getPasswordHash())) {
                 CenterScreen.animatedCenterPrint("Login successful!");
                 waitForEnter(scanner);
                 return true;
@@ -49,14 +35,29 @@ public class UserManager {
         waitForEnter(scanner);
         return false;
     }
+    
+    public void register(Scanner scanner) {
+        CenterScreen.clearScreen();
+        String username = CenterScreen.leftInput("Enter username: ", true);
+        String password = CenterScreen.leftInput("Enter password: ", true);
+    
+        if (hashTable.search(username) != null) {
+            CenterScreen.animatedCenterPrint("Username already exists. Please try another.");
+        } else {
+            hashTable.insert(new User(username, password));
+            CenterScreen.animatedCenterPrint("Registration successful!");
+        }
+        waitForEnter(scanner);
+    }
+    
 
     public void updateUser(Scanner scanner) {
         CenterScreen.clearScreen();
         String username = CenterScreen.leftInput("Enter your current username: ", true);
         String password = CenterScreen.leftInput("Enter your current password: ", true);
-
+    
         User user = hashTable.search(username);
-        if (user != null && user.getPasswordHash().equals(user.hashPassword(password))) {
+        if (user != null && user.getPasswordHash().equals(User.hashPassword(password, user.getSalt()))) {
             String newUsername = CenterScreen.leftInput("Enter new username: ", true);
             String newPassword = CenterScreen.leftInput("Enter new password: ", true);
             hashTable.update(username, new User(newUsername, newPassword));
@@ -66,14 +67,15 @@ public class UserManager {
         }
         waitForEnter(scanner);
     }
+    
 
     public void deleteUser(Scanner scanner) {
         CenterScreen.clearScreen();
         String username = CenterScreen.leftInput("Enter your username: ", true);
         String password = CenterScreen.leftInput("Enter your password: ", true);
-
+    
         User user = hashTable.search(username);
-        if (user != null && user.getPasswordHash().equals(user.hashPassword(password))) {
+        if (user != null && user.getPasswordHash().equals(User.hashPassword(password, user.getSalt()))) {
             hashTable.delete(username);
             CenterScreen.animatedCenterPrint("User deleted successfully.");
         } else {
@@ -81,6 +83,7 @@ public class UserManager {
         }
         waitForEnter(scanner);
     }
+    
 
     public void showAllUsers() {
         List<User> users = getAllUsers();

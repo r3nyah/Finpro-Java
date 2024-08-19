@@ -1,15 +1,23 @@
 package main.java.model;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.PBEKeySpec;
+import java.security.SecureRandom;
+import java.util.Base64;
 
 public class User {
     private String username;
     private String passwordHash;
+    private String salt;
+
+    private static final int SALT_LENGTH = 16; // 16 bytes for salt
+    private static final int HASH_ITERATIONS = 10000; // Number of iterations for PBKDF2
+    private static final int KEY_LENGTH = 256; // Length of the derived key in bits
 
     public User(String username, String password) {
         this.username = username;
-        this.passwordHash = hashPassword(password);
+        this.salt = generateSalt();
+        this.passwordHash = hashPassword(password, salt);
     }
 
     public String getUsername() {
@@ -20,25 +28,34 @@ public class User {
         return passwordHash;
     }
 
-    public String hashPassword(String password) {
+    public String getSalt() {
+        return salt;
+    }
+
+    public static String hashPassword(String password, String salt) {
         try {
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            byte[] hash = digest.digest(password.getBytes());
-            StringBuilder sb = new StringBuilder();
-            for (byte b : hash) {
-                sb.append(String.format("%02x", b));
-            }
-            return sb.toString();
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException("Hashing algorithm not found", e);
+            PBEKeySpec spec = new PBEKeySpec(password.toCharArray(), salt.getBytes(), HASH_ITERATIONS, KEY_LENGTH);
+            SecretKeyFactory skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
+            byte[] hash = skf.generateSecret(spec).getEncoded();
+            return Base64.getEncoder().encodeToString(hash);
+        } catch (Exception e) {
+            throw new RuntimeException("Error hashing password", e);
         }
+    }
+
+    private String generateSalt() {
+        SecureRandom sr = new SecureRandom();
+        byte[] salt = new byte[SALT_LENGTH];
+        sr.nextBytes(salt);
+        return Base64.getEncoder().encodeToString(salt);
     }
 
     public static User fromString(String line) {
         String[] parts = line.split(":");
-        if (parts.length == 2) {
+        if (parts.length == 3) {
             User user = new User(parts[0], "");
-            user.passwordHash = parts[1]; // Directly set the password hash without hashing again
+            user.salt = parts[2];
+            user.passwordHash = parts[1];
             return user;
         }
         return null;
@@ -46,6 +63,6 @@ public class User {
 
     @Override
     public String toString() {
-        return username + ":" + passwordHash; // Format: username:passwordHash
+        return username + ":" + passwordHash + ":" + salt; // Format: username:passwordHash:salt
     }
 }
