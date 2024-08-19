@@ -3,11 +3,7 @@ package main.java.util;
 import main.java.model.User;
 import main.java.service.HashTable;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 
 public class FileManager {
     // Use an absolute path to avoid confusion with relative paths
@@ -15,7 +11,9 @@ public class FileManager {
     //private static final String FILE_PATH = "src/main/java/resources/User.txt";
 
     public void loadUsers(HashTable hashTable) {
-        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH))) {
+        String filePath = "src/main/java/resources/User.txt"; // Adjust this path as necessary
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 User user = User.fromString(line);
@@ -23,10 +21,15 @@ public class FileManager {
                     hashTable.insert(user);
                 }
             }
+        } catch (FileNotFoundException e) {
+            System.err.println("The file was not found: " + filePath);
+            e.printStackTrace();
         } catch (IOException e) {
+            System.err.println("An I/O error occurred while reading the file.");
             e.printStackTrace();
         }
     }
+
 
     public void saveUsers(HashTable hashTable) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH))) {
