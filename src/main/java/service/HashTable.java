@@ -1,6 +1,6 @@
-package main.java.service;
+package service;
 
-import main.java.model.User;
+import model.User;
 import java.util.LinkedList;
 
 public class HashTable {

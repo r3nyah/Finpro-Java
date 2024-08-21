@@ -1,7 +1,7 @@
-package main.java.util;
+package util;
 
-import main.java.model.User;
-import main.java.service.HashTable;
+import model.User;
+import service.HashTable;
 
 import java.io.*;
 

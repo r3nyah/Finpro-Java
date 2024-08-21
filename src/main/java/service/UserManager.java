@@ -1,12 +1,12 @@
-package main.java.service;
+package service;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
-import main.java.model.User;
-import main.java.util.CenterScreen;
-import main.java.util.FileManager;
+import model.User;
+import util.CenterScreen;
+import util.FileManager;
 
 public class UserManager {
     private HashTable hashTable;

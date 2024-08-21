@@ -1,8 +1,8 @@
-package main.java.service;
+package service;
 
 import java.util.Scanner;
-import main.java.util.CenterScreen;
-import main.java.util.FileManager;
+import util.CenterScreen;
+import util.FileManager;
 
 public class LoginRegisterSystem {
     private UserManager userManager;

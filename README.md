@@ -1,1 +1,0 @@
-![Progress Bar](https://media.giphy.com/media/xT0xek1cP0TKKZxu9W/giphy.gif)

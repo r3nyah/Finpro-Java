@@ -1,5 +1,5 @@
-import main.java.service.LoginRegisterSystem;
-import main.java.util.CenterScreen;
+import service.LoginRegisterSystem;
+import util.CenterScreen;
 
 public class Main {
     public static void main(String[] args) {
